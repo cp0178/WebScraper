@@ -1,12 +1,13 @@
 import requests
 import sys
+import re
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from fake_useragent import UserAgent
 #takes in an argument from the command line
 url = sys.argv[1]
 
-print(url)
+#print(url)
 #gets details of the Amazon page
 def get_details(url):
     #tries different user agents
@@ -32,7 +33,12 @@ def get_details(url):
         else:
             #prints the price of an object
             print('Got through')
-            return soup.find_all(class_="a-price-whole")
+            string = str(soup.find_all(class_="a-price-whole"))
+            string = re.sub("<.*?>", " ", string)
+            index = string.find('.')
+            string = string[2 : index]
+            priceString = "Price: " + string
+            return priceString
             
             
 
